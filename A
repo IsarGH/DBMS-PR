@@ -1,0 +1,610 @@
+Q:1
+
+Creating a full E-R diagram and normalizing it into tables for a hospital or college management system is a complex task that requires detailed knowledge of the specific requirements and constraints of the system. However, I can provide a simplified example to give you an idea of the process.
+
+### Entity-Relationship (E-R) Diagram:
+
+Let's consider a simplified hospital management system with the following entities and their relationships:
+
+1. **Entities**:
+   - Patient
+   - Doctor
+   - Nurse
+   - Appointment
+   - Department
+
+2. **Relationships**:
+   - Patients can have multiple appointments with doctors.
+   - Doctors treat patients.
+   - Nurses assist doctors in patient care.
+   - Doctors and nurses work in departments.
+
+This would result in a basic E-R diagram with entities connected by relationships.
+
+### Normalized Tables:
+
+To convert this E-R diagram into normalized tables, you would typically follow the rules of database normalization (e.g., 1st Normal Form, 2nd Normal Form, etc.) based on your specific requirements. Here's a simplified example:
+
+#### Patient Table:
+- PatientID (Primary Key)
+- FirstName
+- LastName
+- ContactNumber
+- ...
+
+#### Doctor Table:
+- DoctorID (Primary Key)
+- FirstName
+- LastName
+- Specialization
+- ...
+
+#### Nurse Table:
+- NurseID (Primary Key)
+- FirstName
+- LastName
+- ...
+
+#### Appointment Table:
+- AppointmentID (Primary Key)
+- PatientID (Foreign Key to Patient Table)
+- DoctorID (Foreign Key to Doctor Table)
+- AppointmentDate
+- ...
+
+#### Department Table:
+- DepartmentID (Primary Key)
+- DepartmentName
+- ...
+
+In a real-world scenario, you would need to identify all the attributes, constraints, and relationships more precisely, and design the tables accordingly. Additionally, you might need to create junction tables for many-to-many relationships and consider indexing, referential integrity, and other database design best practices.
+
+For a college management system, you would follow a similar approach but consider entities like students, courses, instructors, departments, and their relationships.
+
+Please note that designing a comprehensive system would require a thorough understanding of the specific requirements and could be much more complex than this simplified example. It's advisable to consult with a database designer or use a database design tool to create a well-structured schema.
+
+
+Q:2
+
+Here is the modified schema for the EMP and Dept tables based on your requirements:
+
+### EMP Table:
+- Empno (Primary Key)
+- Ename
+- Salary
+- Deptno (Foreign Key referencing Dept)
+
+### Dept Table:
+- Deptno (Primary Key)
+- Dname (Increase size by 30)
+- Dept_location
+
+a) I've applied primary keys for `Empno` and `Deptno` as requested.
+
+b) I increased the size of the `Dname` column by 30 characters. If it was initially defined as, for example, `VARCHAR(20)`, it would now be `VARCHAR(50)` to accommodate the extra 30 characters.
+
+c) I added the `Dept_location` column to the `Dept` table.
+
+Please note that you might need to specify the data types for each column based on your database system (e.g., INT, VARCHAR, etc.), and ensure that foreign key constraints are correctly set up to link `Deptno` in the EMP table to the `Dept` table.
+Certainly, here's the SQL code to create the EMP and Dept tables with the specified schema and modifications:
+
+```sql
+-- Create EMP table
+CREATE TABLE EMP (
+    Empno INT PRIMARY KEY,
+    Ename VARCHAR(255), -- Adjust the size as needed
+    Salary DECIMAL(10, 2), -- Adjust data type as needed
+    Deptno INT
+);
+
+-- Create Dept table
+CREATE TABLE Dept (
+    Deptno INT PRIMARY KEY,
+    Dname VARCHAR(50), -- Increased size by 30
+    Dept_location VARCHAR(255) -- Added Dept_location column
+);
+
+-- Add foreign key constraint from EMP to Dept
+ALTER TABLE EMP
+ADD CONSTRAINT FK_Dept_Emp
+FOREIGN KEY (Deptno)
+REFERENCES Dept(Deptno);
+```
+
+Please note that you should adjust data types (e.g., INT, VARCHAR, DECIMAL) and sizes as per your database system's requirements. The code also includes the foreign key constraint between the `Deptno` in the EMP table and the `Deptno` in the Dept table.
+
+
+
+Q:3
+
+Here is the SQL code to create the EMP and Dept tables, apply primary keys and foreign keys, insert data, and display information:
+
+```sql
+-- Create EMP table
+CREATE TABLE EMP (
+    Empno INT PRIMARY KEY,
+    Ename VARCHAR(255),
+    Salary DECIMAL(10, 2),
+    Deptno INT,
+    FOREIGN KEY (Deptno) REFERENCES Dept(Deptno)
+);
+
+-- Create Dept table
+CREATE TABLE Dept (
+    Deptno INT PRIMARY KEY,
+    Dname VARCHAR(255)
+);
+
+-- Insert data into the EMP table
+INSERT INTO EMP (Empno, Ename, Salary, Deptno)
+VALUES
+    (1, 'John Doe', 50000.00, 1),
+    (2, 'Jane Smith', 60000.00, 2),
+    (3, 'Bob Johnson', 55000.00, 1),
+    (4, 'Alice Brown', 62000.00, 3),
+    (5, 'Charlie Wilson', 58000.00, 2);
+
+-- Display all information from the EMP table
+SELECT * FROM EMP;
+
+-- Display all information from the Dept table
+SELECT * FROM Dept;
+```
+
+This code does the following:
+
+a) It creates the EMP and Dept tables and applies a primary key to `Empno` and `Deptno` in their respective tables.
+
+b) It applies a foreign key constraint on `Deptno` in the EMP table, referencing the `Deptno` in the Dept table.
+
+c) It inserts five rows of sample data into the EMP table.
+
+d) It displays all information from the EMP and Dept tables separately.
+
+Please make sure to adjust data types and constraints according to your specific database system's requirements.
+
+Q:4
+
+Here is the SQL code to create the EMP table, insert data, display information, and update the salary of employees working in the production department:
+
+```sql
+-- Create EMP table
+CREATE TABLE EMP (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Deptno INT
+);
+
+-- Insert data into the EMP table
+INSERT INTO EMP (empno, ename, salary, Deptno)
+VALUES
+    (1, 'John Doe', 50000.00, 1),
+    (2, 'Jane Smith', 60000.00, 2),
+    (3, 'Bob Johnson', 55000.00, 1),
+    (4, 'Alice Brown', 62000.00, 3),
+    (5, 'Charlie Wilson', 58000.00, 2);
+
+-- Display all information from the EMP table
+SELECT * FROM EMP;
+
+-- Update the salary of employees in the production department
+UPDATE EMP
+SET salary = 15000
+WHERE Deptno = 1;
+
+-- Display all information from the EMP table after the update
+SELECT * FROM EMP;
+```
+
+This code does the following:
+
+a) It creates the EMP table with the specified schema and inserts five rows of sample data.
+
+b) It displays all information from the EMP table.
+
+c) It updates the salary of employees working in the production department (Deptno = 1) to 15,000.
+
+After running this code, you will see the updated salary information for employees in the production department when you display the information from the EMP table again.
+
+To display the information of employees working in the IT department, you can use a SQL SELECT statement with a WHERE clause to filter the results based on the department. Assuming the IT department has a specific Deptno, you can do it like this:
+
+```sql
+-- Display information of employees working in the IT department
+SELECT * FROM EMP
+WHERE Deptno = IT_Deptno;
+```
+
+In this query, replace `IT_Deptno` with the actual department number for the IT department. This query will retrieve all the rows from the EMP table where the Deptno matches the IT department's Deptno, showing the information of employees working in the IT department.
+
+
+Q:5
+
+Here's the SQL code to create the EMP table, insert data, and perform the requested queries:
+
+a) Create the EMP table and insert at least 10 rows of sample data:
+
+```sql
+-- Create EMP table
+CREATE TABLE EMP (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Deptno INT
+);
+
+-- Insert data into the EMP table (at least 10 rows)
+INSERT INTO EMP (empno, ename, salary, Deptno)
+VALUES
+    (1, 'John', 15000.00, 1),
+    (2, 'Bob', 18000.00, 2),
+    (3, 'Ann', 21000.00, 1),
+    (4, 'Eve', 9000.00, 3),
+    (5, 'Max', 25000.00, 2),
+    (6, 'Sue', 8000.00, 1),
+    (7, 'Jill', 23000.00, 3),
+    (8, 'Tom', 11000.00, 2),
+    (9, 'Liz', 30000.00, 1),
+    (10, 'Alex', 7500.00, 3);
+```
+
+b) Display names of all employees whose name is exactly 3 characters long:
+
+```sql
+-- Display names of employees with 3-character names
+SELECT ename
+FROM EMP
+WHERE LENGTH(ename) = 3;
+```
+
+c) List the employee name and salary whose salary is not in the range of 10,000 to 20,000:
+
+```sql
+-- List employee name and salary outside the range of 10,000 to 20,000
+SELECT ename, salary
+FROM EMP
+WHERE salary < 10000 OR salary > 20000;
+```
+
+These queries will help you achieve the desired results for displaying employee names with 3 characters and listing employees whose salary is outside the specified range.
+
+
+Q:6Here's the SQL code to create the EMP table, insert data, and perform the requested queries:
+
+a) Create the EMP table and insert at least 10 rows of sample data:
+
+```sql
+-- Create EMP table
+CREATE TABLE EMP (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Deptno INT
+);
+
+-- Insert data into the EMP table (at least 10 rows)
+INSERT INTO EMP (empno, ename, salary, Deptno)
+VALUES
+    (1, 'John', 15000.00, 1),
+    (2, 'Bob', 18000.00, 2),
+    (3, 'Ann', 21000.00, 1),
+    (4, 'Eve', 9000.00, 3),
+    (5, 'Max', 25000.00, 2),
+    (6, 'Sue', 8000.00, 1),
+    (7, 'Jill', 23000.00, 3),
+    (8, 'Tom', 11000.00, 2),
+    (9, 'Liz', 30000.00, 1),
+    (10, 'Alex', 7500.00, 3);
+```
+
+b) Display the minimum and maximum salary from the EMP table:
+
+```sql
+-- Display the minimum and maximum salary
+SELECT MIN(salary) AS min_salary, MAX(salary) AS max_salary
+FROM EMP;
+```
+
+c) Display the details of the lowest paid employee under each department:
+
+```sql
+-- Display details of the lowest paid employee in each department
+SELECT Deptno, ename, salary
+FROM EMP AS e
+WHERE salary = (SELECT MIN(salary) FROM EMP WHERE Deptno = e.Deptno);
+```
+
+d) Display the details of employees earning a salary greater than 10,000 from every department:
+
+```sql
+-- Display details of employees earning more than 10,000 from every department
+SELECT * FROM EMP WHERE salary > 10000;
+```
+
+These queries will allow you to obtain the minimum and maximum salary, find the lowest paid employees in each department, and display employees earning more than 10,000 from every department.
+
+Q:7
+Certainly, I can provide you with examples of both INNER JOIN and LEFT JOIN.
+
+Suppose you have two tables, "Employees" and "Departments," with the following schema:
+
+**Employees Table:**
+- emp_id (Primary Key)
+- emp_name
+- department_id (Foreign Key referencing Departments)
+
+**Departments Table:**
+- department_id (Primary Key)
+- department_name
+
+Here's how you can perform INNER JOIN and LEFT JOIN operations using SQL:
+
+1. **INNER JOIN:**
+
+An INNER JOIN returns only the rows that have matching values in both tables.
+
+```sql
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Employees
+INNER JOIN Departments ON Employees.department_id = Departments.department_id;
+```
+
+This query will retrieve employee information along with their corresponding department names, but it will exclude employees who are not assigned to any department.
+
+2. **LEFT JOIN:**
+
+A LEFT JOIN returns all rows from the left table (Employees) and the matching rows from the right table (Departments). If there's no match, it returns NULL values for the columns from the right table.
+
+```sql
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Employees
+LEFT JOIN Departments ON Employees.department_id = Departments.department_id;
+```
+
+This query will retrieve all employee information, including those who are not assigned to any department, with NULL values for the department information in such cases.
+
+These are the basic examples of INNER JOIN and LEFT JOIN. You can adapt them to your specific tables and use cases as needed.
+
+Q:8
+Sure, I can provide examples of both INNER JOIN and FULL JOIN operations.
+
+Let's consider two tables: "Employees" and "Departments," with the following schema:
+
+**Employees Table:**
+- emp_id (Primary Key)
+- emp_name
+- department_id (Foreign Key referencing Departments)
+
+**Departments Table:**
+- department_id (Primary Key)
+- department_name
+
+1. **INNER JOIN:**
+
+An INNER JOIN returns only the rows that have matching values in both tables.
+
+```sql
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Employees
+INNER JOIN Departments ON Employees.department_id = Departments.department_id;
+```
+
+This query will retrieve employee information along with their corresponding department names, but it will exclude employees who are not assigned to any department.
+
+2. **FULL JOIN:**
+
+A FULL JOIN returns all rows from both tables and includes NULL values when there are no matches in the joined columns.
+
+```sql
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Employees
+FULL JOIN Departments ON Employees.department_id = Departments.department_id;
+```
+
+Please note that not all database systems support the FULL JOIN directly. In such cases, you can achieve the same result using a combination of LEFT JOIN and UNION with a RIGHT JOIN. Here's an example:
+
+```sql
+-- Using a combination of LEFT JOIN and UNION
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Employees
+LEFT JOIN Departments ON Employees.department_id = Departments.department_id
+UNION
+SELECT Employees.emp_id, Employees.emp_name, Departments.department_name
+FROM Departments
+LEFT JOIN Employees ON Employees.department_id = Departments.department_id;
+```
+
+This query combines the results of a LEFT JOIN between Employees and Departments with a LEFT JOIN between Departments and Employees, essentially achieving a FULL JOIN effect.
+
+You can choose the appropriate method based on your database system's support for FULL JOIN.
+
+Q:9
+Creating and managing views in a database system involves defining virtual tables based on the structure and data of existing tables. You can insert, modify, and delete records through views under certain conditions. Below, I'll outline how to create views and perform these actions:
+
+**i) Create Different Views:**
+
+Let's assume you have two tables: "Customers" and "Orders." You want to create views based on these tables:
+
+```sql
+-- Create a view to display customer information
+CREATE VIEW CustomerView AS
+SELECT CustomerID, CustomerName, ContactName, Country
+FROM Customers;
+
+-- Create a view to display order information
+CREATE VIEW OrderView AS
+SELECT OrderID, CustomerID, OrderDate, ShipCity
+FROM Orders;
+```
+
+These views will allow you to query customer and order information without directly accessing the original tables.
+
+**ii) Insert, Modify, and Delete Records Through Views:**
+
+You can insert, modify, and delete records through views, but there are some conditions to consider:
+
+- Inserting records through a view is allowed if the view is based on a single table. For example:
+
+```sql
+-- Insert a new customer through the CustomerView
+INSERT INTO CustomerView (CustomerID, CustomerName, ContactName, Country)
+VALUES (100, 'New Customer', 'John Doe', 'USA');
+```
+
+- Modifying records through a view is allowed if the view doesn't involve calculations, aggregate functions, or JOINs. For example:
+
+```sql
+-- Modify a customer's information through the CustomerView
+UPDATE CustomerView
+SET CustomerName = 'Updated Customer'
+WHERE CustomerID = 100;
+```
+
+- Deleting records through a view is allowed if the view is based on a single table. For example:
+
+```sql
+-- Delete a customer through the CustomerView
+DELETE FROM CustomerView
+WHERE CustomerID = 100;
+```
+
+**iii) Delete the Views:**
+
+You can delete views as follows:
+
+```sql
+-- Delete the CustomerView
+DROP VIEW CustomerView;
+
+-- Delete the OrderView
+DROP VIEW OrderView;
+```
+
+These SQL commands will remove the specified views from the database.
+
+Remember that the ability to perform insert, update, and delete operations through views may vary depending on the database system you are using. Always consult your database documentation for specific rules and restrictions related to views in your database system.
+
+
+Q:10
+Certainly! You can create a PL/SQL function to find the factorial of a given number. Here's an example of how to write such a function:
+
+```sql
+CREATE OR REPLACE FUNCTION CalculateFactorial(n IN NUMBER) RETURN NUMBER IS
+  result NUMBER := 1;
+BEGIN
+  IF n < 0 THEN
+    RETURN NULL; -- Factorial is not defined for negative numbers
+  ELSIF n = 0 THEN
+    RETURN 1; -- Factorial of 0 is 1
+  ELSE
+    FOR i IN 1..n LOOP
+      result := result * i;
+    END LOOP;
+    RETURN result;
+  END IF;
+END CalculateFactorial;
+/
+```
+
+This PL/SQL function is named `CalculateFactorial`. It takes an input parameter `n`, which is the number for which you want to calculate the factorial. It returns the factorial as a result.
+
+To use the function, you can call it in a PL/SQL block or from SQL*Plus as follows:
+
+```sql
+-- Calculate factorial for a given number (e.g., 5)
+DECLARE
+  num NUMBER := 5;
+  fact NUMBER;
+BEGIN
+  fact := CalculateFactorial(num);
+  DBMS_OUTPUT.PUT_LINE('Factorial of ' || num || ' is ' || fact);
+END;
+/
+```
+
+This PL/SQL block calls the `CalculateFactorial` function with the input parameter `num`, which is set to 5, and then displays the result using `DBMS_OUTPUT.PUT_LINE`. You can replace `num` with any number for which you want to calculate the factorial.
+
+Q:11
+
+
+Certainly! You can write a PL/SQL program to display the employee name (`ename`) and salary (`esal`) of all employees using a cursor. Here's an example:
+
+```sql
+-- Declare a PL/SQL anonymous block
+DECLARE
+  -- Declare variables to store employee name and salary
+  v_ename employees.ename%TYPE;
+  v_esal employees.sal%TYPE;
+
+  -- Declare a cursor for selecting employee data
+  CURSOR emp_cursor IS
+    SELECT ename, sal
+    FROM employees;
+
+BEGIN
+  -- Open the cursor
+  OPEN emp_cursor;
+
+  -- Loop through the cursor and fetch employee data
+  LOOP
+    FETCH emp_cursor INTO v_ename, v_esal;
+    
+    -- Exit the loop when no more rows are found
+    EXIT WHEN emp_cursor%NOTFOUND;
+
+    -- Display employee name and salary
+    DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_ename || ', Salary: ' || v_esal);
+  END LOOP;
+
+  -- Close the cursor
+  CLOSE emp_cursor;
+
+END;
+/
+```
+
+In this PL/SQL program:
+
+- We declare two variables `v_ename` and `v_esal` to store the employee name and salary.
+- We declare a cursor named `emp_cursor` to select the `ename` and `sal` columns from the `employees` table.
+- We open the cursor using `OPEN`.
+- We loop through the cursor using `LOOP`, fetch data using `FETCH INTO`, and display the employee name and salary.
+- The loop exits when there are no more rows to fetch (`emp_cursor%NOTFOUND`).
+- We close the cursor using `CLOSE`.
+
+You can execute this PL/SQL block to display the name and salary of all employees from the `employees` table.
+
+Q:12
+Sure, here's another example of a PL/SQL program to display the employee name (`ename`) and salary (`esal`) of all employees using a cursor. This example assumes you have an "employees" table:
+
+```sql
+-- Declare a PL/SQL anonymous block
+DECLARE
+  -- Declare variables to store employee name and salary
+  v_ename employees.ename%TYPE;
+  v_esal employees.sal%TYPE;
+
+  -- Declare a cursor for selecting employee data
+  CURSOR emp_cursor IS
+    SELECT ename, sal
+    FROM employees;
+
+BEGIN
+  -- Open the cursor
+  OPEN emp_cursor;
+
+  -- Fetch and display employee data using a FOR loop
+  FOR emp_rec IN emp_cursor LOOP
+    v_ename := emp_rec.ename;
+    v_esal := emp_rec.sal;
+    DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_ename || ', Salary: ' || v_esal);
+  END LOOP;
+
+  -- Close the cursor
+  CLOSE emp_cursor;
+
+END;
+/
+```
+
+In this example, we're using a `FOR` loop with a cursor to fetch and display employee data. It's a more concise way of achieving the same result as the previous example. This code will also display the name and salary of all employees from the "employees" table.
