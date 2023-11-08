@@ -1,0 +1,315 @@
+Q:13
+Creating triggers in a database requires specific knowledge of the database system you're using (e.g., Oracle, SQL Server, MySQL) as the syntax and features can vary. Below is a general example of creating a trigger in PL/SQL for Oracle Database.
+
+Assuming you have a table named "Orders" and you want to create a trigger that fires before an INSERT operation, here's how you can do it:
+
+```sql
+-- Create a trigger that fires before an INSERT operation on the "Orders" table
+CREATE OR REPLACE TRIGGER BeforeOrderInsert
+BEFORE INSERT ON Orders
+FOR EACH ROW
+BEGIN
+  -- Your trigger logic here
+  -- For example, you can log the insert operation
+  INSERT INTO Order_Log (OrderID, Action, ActionDate)
+  VALUES (:NEW.OrderID, 'INSERT', SYSDATE);
+END;
+/
+```
+
+In this example:
+- `BeforeOrderInsert` is the name of the trigger.
+- `BEFORE INSERT ON Orders` specifies that the trigger should fire before an INSERT operation on the "Orders" table.
+- `FOR EACH ROW` indicates that the trigger operates on each row being inserted.
+
+Within the trigger block, you can define the logic you want to execute before the INSERT operation. In this case, it logs the operation in an "Order_Log" table.
+
+Please replace the example logic with the actions you want the trigger to perform. Additionally, the syntax and features can vary depending on your specific database system, so consult your database documentation for more detailed information.
+Q:14
+Certainly, MongoDB provides CRUD (Create, Read, Update, Delete) operations to interact with your data. Below, I'll provide examples of how to use these operations and various features like the `save` method and logical operators.
+
+### 1. Create (Insert) Documents:
+To create new documents in MongoDB, you can use the `insertOne` or `insertMany` methods.
+
+**Example: Insert a single document:**
+```javascript
+db.collectionName.insertOne({
+   field1: "value1",
+   field2: "value2",
+   // Other fields
+});
+```
+
+**Example: Insert multiple documents:**
+```javascript
+db.collectionName.insertMany([
+   {
+       field1: "value1",
+       field2: "value2",
+   },
+   {
+       field1: "value3",
+       field2: "value4",
+   },
+   // Other documents
+]);
+```
+
+### 2. Read (Query) Documents:
+You can use `find` and various query operators to retrieve documents.
+
+**Example: Find documents that match a condition:**
+```javascript
+db.collectionName.find({ field1: "value1" });
+```
+
+**Example: Find documents using logical operators (AND, OR):**
+```javascript
+db.collectionName.find({
+   $or: [
+       { field1: "value1" },
+       { field2: "value2" }
+   ]
+});
+```
+
+### 3. Update Documents:
+To update documents, you can use the `updateOne`, `updateMany`, or `replaceOne` methods.
+
+**Example: Update a single document:**
+```javascript
+db.collectionName.updateOne(
+   { field1: "value1" },
+   { $set: { field2: "new_value" } }
+);
+```
+
+**Example: Update multiple documents:**
+```javascript
+db.collectionName.updateMany(
+   { field1: "value1" },
+   { $set: { field2: "new_value" } }
+);
+```
+
+### 4. Delete Documents:
+Use `deleteOne` or `deleteMany` to remove documents.
+
+**Example: Delete a single document:**
+```javascript
+db.collectionName.deleteOne({ field1: "value1" });
+```
+
+**Example: Delete multiple documents:**
+```javascript
+db.collectionName.deleteMany({ field1: "value1" });
+```
+
+### 5. Save Method:
+The `save` method is used to insert or update a document based on its existence. If a document with the same `_id` exists, it will be updated; otherwise, a new document will be inserted.
+
+**Example: Use the `save` method:**
+```javascript
+var documentToSave = {
+   _id: 123,
+   field1: "new_value"
+};
+db.collectionName.save(documentToSave);
+```
+
+These are basic examples of how to use CRUD operations, the `save` method, and logical operators in MongoDB. You can customize these queries based on your specific data and requirements.
+
+Q:14
+Certainly! Let's create a simple example in MongoDB and demonstrate CRUD operations using a hypothetical database of "Books." We will perform basic CRUD operations on this collection.
+
+### Step 1: Connect to the MongoDB Database
+Make sure you have MongoDB installed and running. Connect to MongoDB through a shell, driver, or client application.
+
+```javascript
+// Connect to MongoDB
+use myLibrary
+```
+
+### Step 2: Create a Collection and Insert Documents
+Let's create a "Books" collection and insert some sample documents.
+
+```javascript
+// Create a collection
+db.createCollection("Books")
+
+// Insert some sample books
+db.Books.insertOne({
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    genre: "Classic"
+});
+
+db.Books.insertOne({
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    genre: "Classic"
+});
+
+db.Books.insertOne({
+    title: "The Hobbit",
+    author: "J.R.R. Tolkien",
+    genre: "Fantasy"
+});
+```
+
+### Step 3: Read (Query) Documents
+Let's retrieve documents from the "Books" collection.
+
+```javascript
+// Find all books in the "Classic" genre
+db.Books.find({ genre: "Classic" });
+
+// Find books authored by "J.R.R. Tolkien"
+db.Books.find({ author: "J.R.R. Tolkien" });
+```
+
+### Step 4: Update Documents
+We'll update a document using the `updateOne` method.
+
+```javascript
+// Update the genre of "The Hobbit" to "Fantasy Adventure"
+db.Books.updateOne(
+   { title: "The Hobbit" },
+   { $set: { genre: "Fantasy Adventure" } }
+);
+```
+
+### Step 5: Delete Documents
+Let's delete a document using the `deleteOne` method.
+
+```javascript
+// Delete "To Kill a Mockingbird" from the collection
+db.Books.deleteOne({ title: "To Kill a Mockingbird" });
+```
+
+### Step 6: Save Method
+Now, let's use the `save` method to insert or update a document.
+
+```javascript
+// Insert a new book using the save method
+var newBook = {
+    title: "War and Peace",
+    author: "Leo Tolstoy",
+    genre: "Historical Fiction"
+};
+db.Books.save(newBook);
+
+// Update the "The Great Gatsby" using the save method
+var updatedBook = {
+    _id: ObjectId("your_existing_id"),
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    genre: "Classic Fiction"
+};
+db.Books.save(updatedBook);
+```
+
+These are some basic examples of how to perform CRUD operations and use the `save` method in a MongoDB database with the "Books" collection. You can adapt and expand these operations based on your data and requirements.
+
+
+
+
+Certainly, let's work through a more detailed example of MongoDB aggregation and indexing using a sample "Sales" collection.
+
+### Step 1: Create a Sample Collection
+
+For this example, we'll create a sample "Sales" collection with documents representing sales data. You can insert sample data like this:
+
+```javascript
+db.Sales.insertMany([
+  {
+    _id: 1,
+    product: "Product A",
+    category: "Electronics",
+    orderDate: ISODate("2023-01-15T08:00:00Z"),
+    totalAmount: 500
+  },
+  {
+    _id: 2,
+    product: "Product B",
+    category: "Clothing",
+    orderDate: ISODate("2023-01-20T14:30:00Z"),
+    totalAmount: 300
+  },
+  {
+    _id: 3,
+    product: "Product C",
+    category: "Electronics",
+    orderDate: ISODate("2023-02-10T12:15:00Z"),
+    totalAmount: 800
+  },
+  {
+    _id: 4,
+    product: "Product A",
+    category: "Electronics",
+    orderDate: ISODate("2023-03-05T09:45:00Z"),
+    totalAmount: 700
+  }
+]);
+```
+
+### Step 2: Create an Index
+
+Now, create an index on the "orderDate" field to improve query performance:
+
+```javascript
+db.Sales.createIndex({ orderDate: 1 });
+```
+
+### Step 3: Aggregation Queries
+
+**Example 1: Find the total sales per product category for the month of January.**
+
+```javascript
+db.Sales.aggregate([
+  {
+    $match: {
+      orderDate: {
+        $gte: ISODate("2023-01-01T00:00:00Z"),
+        $lt: ISODate("2023-02-01T00:00:00Z")
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$category",
+      totalSales: { $sum: "$totalAmount" }
+    }
+  }
+]);
+```
+
+In this aggregation:
+- `$match` filters sales records for January.
+- `$group` groups sales by category and calculates the total sales for each category in January.
+
+**Example 2: Find the top-selling products of all time.**
+
+```javascript
+db.Sales.aggregate([
+  {
+    $group: {
+      _id: "$product",
+      totalSales: { $sum: "$totalAmount" }
+    }
+  },
+  {
+    $sort: { totalSales: -1 }
+  },
+  {
+    $limit: 5
+  }
+]);
+```
+
+In this aggregation:
+- `$group` groups sales by product and calculates the total sales for each product.
+- `$sort` sorts products by total sales in descending order.
+- `$limit` limits the result to the top 5 products.
+
+These examples demonstrate the use of aggregation and indexing in MongoDB to perform complex queries and improve query performance based on sample sales data. You can adapt and expand these examples to meet your specific data and reporting needs.
